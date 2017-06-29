@@ -6,6 +6,7 @@
 "use strict";
 const https = require("https");
 
+
 exports.handler = function(event, context) {
     try {
 
@@ -61,16 +62,17 @@ function onSessionStarted(sessionStartedRequest, session) {
 function onLaunch(launchRequest, session, callback) {
     console.log("onLaunch requestId=" + launchRequest.requestId +
         ", sessionId=" + session.sessionId);
-
-    var cardTitle = "W. Y. E. P. Where the music matters";
-    var speechOutput = "Commands you can say are: Alexa, tell y. e. p. to play.  Alexa, tell y. e. p. to stop.  Alexa, ask y. e. p. what song this is. Alexa tell y. e. p. to favorite.";
-    callback(session.attributes,
-        buildSpeechletResponse(cardTitle, speechOutput, "", true));
+    play("play", session, callback);
 }
 
 /**
  * Called when the user specifies an intent for this skill.
  */
+function help (intent, session, callback){
+    var cardTitle = "W. Y. E. P. Where the music matters";
+    var speechOutput = "Commands you can say are: Alexa, tell y. e. p. to play.  Alexa, tell y. e. p. to stop.  Alexa, ask y. e. p. what song this is.";
+    callback(session.attributes, buildSpeechletResponse(cardTitle, speechOutput, "", true));
+} 
 function onIntent(intentRequest, session, callback) {
     console.log("onIntent requestId=" + intentRequest.requestId +
         ", sessionId=" + session.sessionId);
@@ -85,6 +87,12 @@ function onIntent(intentRequest, session, callback) {
         case "stop":
             stop(intent, session, callback);
             break;
+        case "AMAZON.PauseIntent":
+            stop(intent, session, callback);
+            break; 
+        case "AMAZON.ResumeIntent":
+            play(intent, session, callback);
+            break;    
         case "whatSong":
             whatSong(intent, session, callback);
             break;
