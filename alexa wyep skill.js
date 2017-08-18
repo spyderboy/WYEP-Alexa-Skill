@@ -1,6 +1,7 @@
 /**
  
- Copyright 2017 Antonio Licon.
+ Published 2017 by Antonio Licon
+ Please adapt and use freely!
  
 */
 "use strict";
@@ -9,10 +10,11 @@ const https = require("https");
 
 exports.handler = function(event, context) {
     try {
-
-        if (event.session.application.applicationId !== "amzn1.ask.skill.92cdd6ec-a294-432e-9df5-c9b8f024ab7e") {
-            context.fail("Invalid Application ID");
-        }
+     
+//Uncomment this to restrict call to your Alexa Skill
+//        if (event.session.application.applicationId !== "yourApplicationIDHere") {
+//           context.fail("Invalid Application ID");
+//        }
 
         if (event.session.new) {
             onSessionStarted({
@@ -213,6 +215,7 @@ function play(intent, session, callback) {
                 playBehavior: "REPLACE_ALL",
                 audioItem: {
                     stream: {
+//change this URL to your stream                       
                         url: "https://playerservices.streamtheworld.com/api/livestream-redirect/WYEPFMAAC.aac",
                         token: "913",
                         expectedPreviousToken: null,
